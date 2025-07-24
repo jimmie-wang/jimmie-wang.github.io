@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="不知道大伙有没有感觉到，cursor这东西出来后web开发星人的危机感&hellip;这玩意可能要带来生产方式的大变革&hellip;尝试布局中\n">
+<title>DeepLearning Basic</title>
+
+<link rel='canonical' href='https://jimmie-wang.github.io/p/deeplearning-basic/'>
+
+<link rel="stylesheet" href="/scss/style.min.6479b913ccc4980c5ee168df7d69ea17aa47ca00359f278cb625eaae6be5cf91.css"><meta property='og:title' content="DeepLearning Basic">
+<meta property='og:description' content="不知道大伙有没有感觉到，cursor这东西出来后web开发星人的危机感&hellip;这玩意可能要带来生产方式的大变革&hellip;尝试布局中\n">
+<meta property='og:url' content='https://jimmie-wang.github.io/p/deeplearning-basic/'>
+<meta property='og:site_name' content='JimmyWang'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='notebook' /><meta property='article:tag' content='AI' /><meta property='article:published_time' content='2025-07-23T11:57:47&#43;08:00'/><meta property='article:modified_time' content='2025-07-23T11:57:47&#43;08:00'/><meta property='og:image' content='https://jimmie-wang.github.io/p/deeplearning-basic/network.jpg' />
+<meta name="twitter:title" content="DeepLearning Basic">
+<meta name="twitter:description" content="不知道大伙有没有感觉到，cursor这东西出来后web开发星人的危机感&hellip;这玩意可能要带来生产方式的大变革&hellip;尝试布局中\n"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://jimmie-wang.github.io/p/deeplearning-basic/network.jpg' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+<div class="loading">
+    
+    
+    <div aria-label="Orange and tan hamster running in a metal wheel" role="img" class="wheel-and-hamster">
+        <div class="wheel"></div>
+        <div class="hamster">
+            <div class="hamster__body">
+                <div class="hamster__head">
+                    <div class="hamster__ear"></div>
+                    <div class="hamster__eye"></div>
+                    <div class="hamster__nose"></div>
+                </div>
+                <div class="hamster__limb hamster__limb--fr"></div>
+                <div class="hamster__limb hamster__limb--fl"></div>
+                <div class="hamster__limb hamster__limb--br"></div>
+                <div class="hamster__limb hamster__limb--bl"></div>
+                <div class="hamster__tail"></div>
+            </div>
+        </div>
+        <div class="spoke"></div>
+    </div>
+</div>
+
+<style>
+    .loading {
+        position: fixed;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 99;
+        background-color: #f5f5fa;
+    }
+    .animated-stop {
+        animation-play-state: paused !important;
+    }
+	
+    .scaleAndFadeout {
+        animation: scaleAndFadeOut 1.5s forwards;
+    }
+
+     
+    @keyframes scaleAndFadeOut {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        100% {
+            transform: scale(1.5);
+            opacity: 0;
+        }
+    }
+
+     
+    .wheel-and-hamster {
+        --dur: 1s;
+        position: relative;
+        width: 12em;
+        height: 12em;
+        font-size: 14px;
+    }
+
+    .wheel,
+    .hamster,
+    .hamster div,
+    .spoke {
+        position: absolute;
+    }
+
+    .wheel,
+    .spoke {
+        border-radius: 50%;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .wheel {
+        background: radial-gradient(100% 100% at center, hsla(0, 0%, 60%, 0) 47.8%, hsl(0, 0%, 60%) 48%);
+        z-index: 99;
+    }
+
+    .hamster {
+        animation: hamster var(--dur) ease-in-out infinite;
+        top: 50%;
+        left: calc(50% - 3.5em);
+        width: 7em;
+        height: 3.75em;
+        transform: rotate(4deg) translate(-0.8em, 1.85em);
+        transform-origin: 50% 0;
+        z-index: 99;
+    }
+
+    .hamster__head {
+        animation: hamsterHead var(--dur) ease-in-out infinite;
+        background: hsl(30, 90%, 55%);
+        border-radius: 70% 30% 0 100% / 40% 25% 25% 60%;
+        box-shadow: 0 -0.25em 0 hsl(30, 90%, 80%) inset,
+            0.75em -1.55em 0 hsl(30, 90%, 90%) inset;
+        top: 0;
+        left: -2em;
+        width: 2.75em;
+        height: 2.5em;
+        transform-origin: 100% 50%;
+    }
+
+    .hamster__ear {
+        animation: hamsterEar var(--dur) ease-in-out infinite;
+        background: hsl(0, 90%, 85%);
+        border-radius: 50%;
+        box-shadow: -0.25em 0 hsl(30, 90%, 55%) inset;
+        top: -0.25em;
+        right: -0.25em;
+        width: 0.75em;
+        height: 0.75em;
+        transform-origin: 50% 75%;
+    }
+
+    .hamster__eye {
+        animation: hamsterEye var(--dur) linear infinite;
+        background-color: hsl(0, 0%, 0%);
+        border-radius: 50%;
+        top: 0.375em;
+        left: 1.25em;
+        width: 0.5em;
+        height: 0.5em;
+    }
+
+    .hamster__nose {
+        background: hsl(0, 90%, 75%);
+        border-radius: 35% 65% 85% 15% / 70% 50% 50% 30%;
+        top: 0.75em;
+        left: 0;
+        width: 0.2em;
+        height: 0.25em;
+    }
+
+    .hamster__body {
+        animation: hamsterBody var(--dur) ease-in-out infinite;
+        background: hsl(30, 90%, 90%);
+        border-radius: 50% 30% 50% 30% / 15% 60% 40% 40%;
+        box-shadow: 0.1em 0.75em 0 hsl(30, 90%, 55%) inset,
+            0.15em -0.5em 0 hsl(30, 90%, 80%) inset;
+        top: 0.25em;
+        left: 2em;
+        width: 4.5em;
+        height: 3em;
+        transform-origin: 17% 50%;
+        transform-style: preserve-3d;
+    }
+
+    .hamster__limb--fr,
+    .hamster__limb--fl {
+        clip-path: polygon(0 0, 100% 0, 70% 80%, 60% 100%, 0% 100%, 40% 80%);
+        top: 2em;
+        left: 0.5em;
+        width: 1em;
+        height: 1.5em;
+        transform-origin: 50% 0;
+    }
+
+    .hamster__limb--fr {
+        animation: hamsterFRLimb var(--dur) linear infinite;
+        background: linear-gradient(hsl(30, 90%, 80%) 80%, hsl(0, 90%, 75%) 80%);
+        transform: rotate(15deg) translateZ(-1px);
+    }
+
+    .hamster__limb--fl {
+        animation: hamsterFLLimb var(--dur) linear infinite;
+        background: linear-gradient(hsl(30, 90%, 90%) 80%, hsl(0, 90%, 85%) 80%);
+        transform: rotate(15deg);
+    }
+
+    .hamster__limb--br,
+    .hamster__limb--bl {
+        border-radius: 0.75em 0.75em 0 0;
+        clip-path: polygon(0 0, 100% 0, 100% 30%, 70% 90%, 70% 100%, 30% 100%, 40% 90%, 0% 30%);
+        top: 1em;
+        left: 2.8em;
+        width: 1.5em;
+        height: 2.5em;
+        transform-origin: 50% 30%;
+    }
+
+    .hamster__limb--br {
+        animation: hamsterBRLimb var(--dur) linear infinite;
+        background: linear-gradient(hsl(30, 90%, 80%) 90%, hsl(0, 90%, 75%) 90%);
+        transform: rotate(-25deg) translateZ(-1px);
+    }
+
+    .hamster__limb--bl {
+        animation: hamsterBLLimb var(--dur) linear infinite;
+        background: linear-gradient(hsl(30, 90%, 90%) 90%, hsl(0, 90%, 85%) 90%);
+        transform: rotate(-25deg);
+    }
+
+    .hamster__tail {
+        animation: hamsterTail var(--dur) linear infinite;
+        background: hsl(0, 90%, 85%);
+        border-radius: 0.25em 50% 50% 0.25em;
+        box-shadow: 0 -0.2em 0 hsl(0, 90%, 75%) inset;
+        top: 1.5em;
+        right: -0.5em;
+        width: 1em;
+        height: 0.5em;
+        transform: rotate(30deg) translateZ(-1px);
+        transform-origin: 0.25em 0.25em;
+    }
+
+    .spoke {
+        animation: spoke var(--dur) linear infinite;
+        background: radial-gradient(100% 100% at center, hsl(0, 0%, 60%) 4.8%, hsla(0, 0%, 60%, 0) 5%),
+            linear-gradient(hsla(0, 0%, 55%, 0) 46.9%, hsl(0, 0%, 65%) 47% 52.9%, hsla(0, 0%, 65%, 0) 53%) 50% 50% / 99% 99% no-repeat;
+    }
+
+     
+    @keyframes hamster {
+
+        from,
+        to {
+            transform: rotate(4deg) translate(-0.8em, 1.85em);
+        }
+
+        50% {
+            transform: rotate(0) translate(-0.8em, 1.85em);
+        }
+    }
+
+    @keyframes hamsterHead {
+
+        from,
+        25%,
+        50%,
+        75%,
+        to {
+            transform: rotate(0);
+        }
+
+        12.5%,
+        37.5%,
+        62.5%,
+        87.5% {
+            transform: rotate(8deg);
+        }
+    }
+
+    @keyframes hamsterEye {
+
+        from,
+        90%,
+        to {
+            transform: scaleY(1);
+        }
+
+        95% {
+            transform: scaleY(0);
+        }
+    }
+
+    @keyframes hamsterEar {
+
+        from,
+        25%,
+        50%,
+        75%,
+        to {
+            transform: rotate(0);
+        }
+
+        12.5%,
+        37.5%,
+        62.5%,
+        87.5% {
+            transform: rotate(12deg);
+        }
+    }
+
+    @keyframes hamsterBody {
+
+        from,
+        25%,
+        50%,
+        75%,
+        to {
+            transform: rotate(0);
+        }
+
+        12.5%,
+        37.5%,
+        62.5%,
+        87.5% {
+            transform: rotate(-2deg);
+        }
+    }
+
+    @keyframes hamsterFRLimb {
+
+        from,
+        25%,
+        50%,
+        75%,
+        to {
+            transform: rotate(50deg) translateZ(-1px);
+        }
+
+        12.5%,
+        37.5%,
+        62.5%,
+        87.5% {
+            transform: rotate(-30deg) translateZ(-1px);
+        }
+    }
+
+    @keyframes hamsterFLLimb {
+
+        from,
+        25%,
+        50%,
+        75%,
+        to {
+            transform: rotate(-30deg);
+        }
+
+        12.5%,
+        37.5%,
+        62.5%,
+        87.5% {
+            transform: rotate(50deg);
+        }
+    }
+
+    @keyframes hamsterBRLimb {
+
+        from,
+        25%,
+        50%,
+        75%,
+        to {
+            transform: rotate(-60deg) translateZ(-1px);
+        }
+
+        12.5%,
+        37.5%,
+        62.5%,
+        87.5% {
+            transform: rotate(20deg) translateZ(-1px);
+        }
+    }
+
+    @keyframes hamsterBLLimb {
+
+        from,
+        25%,
+        50%,
+        75%,
+        to {
+            transform: rotate(20deg);
+        }
+
+        12.5%,
+        37.5%,
+        62.5%,
+        87.5% {
+            transform: rotate(-60deg);
+        }
+    }
+
+    @keyframes hamsterTail {
+
+        from,
+        25%,
+        50%,
+        75%,
+        to {
+            transform: rotate(30deg) translateZ(-1px);
+        }
+
+        12.5%,
+        37.5%,
+        62.5%,
+        87.5% {
+            transform: rotate(10deg) translateZ(-1px);
+        }
+    }
+
+    @keyframes spoke {
+        from {
+            transform: rotate(0);
+        }
+
+        to {
+            transform: rotate(-1turn);
+        }
+    }
+
+    
+</style>
+
+<script>
+    function initLoading() {
+        let loading = document.querySelector(".loading");
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            
+            loadFinish();
+            
+            setTimeout(() => {
+                loading.style.display = "none";
+            }, 1500)
+        });
+    }
+
+    function loadFinish() {
+        
+        let loader = document.querySelector(".wheel-and-hamster");
+        loader.classList.add("animated-stop")
+        
+        let loading = document.querySelector(".loading");
+        loading.classList.add("scaleAndFadeout")
+    }
+
+    initLoading();
+</script>
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_459268546f6ad49.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">😴</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">JimmyWang</a></h1>
+            <h2 class="site-description">Anything may appear here, like music player at bottom. Keep updating...</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/29667900'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-bilibili"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 10a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-6z" /><path d="M8 3l2 3" /><path d="M16 3l-2 3" /><path d="M9 13v-2" /><path d="M15 11v2" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://www.instagram.com/jimmywang778'
+                        target="_blank"
+                        title="Instagram"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-instagram"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 8a4 4 0 0 1 4 -4h8a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-8a4 4 0 0 1 -4 -4z" /><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" /><path d="M16.5 7.5v.01" /></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页 | Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E%E6%88%91-about-me/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于我 | About me</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档 | Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索 | Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE-links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链 | Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#感知机-神经网络">感知机-&gt;神经网络</a>
+      <ol>
+        <li><a href="#激活函数">激活函数</a></li>
+        <li><a href="#损失函数">损失函数</a></li>
+        <li><a href="#矩阵向量求导">矩阵&amp;向量求导</a></li>
+        <li><a href="#反向传播">反向传播</a></li>
+      </ol>
+    </li>
+    <li><a href="#手撸2层神经网络">手撸2层神经网络</a></li>
+    <li><a href="#优化方法">优化方法</a>
+      <ol>
+        <li><a href="#梯度如何更新">梯度如何更新</a></li>
+        <li><a href="#权重初始值">权重初始值</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/deeplearning-basic/">
+                <img src="/p/deeplearning-basic/network_hu_1961d23a0b8aa0cf.jpg"
+                        srcset="/p/deeplearning-basic/network_hu_1961d23a0b8aa0cf.jpg 800w, /p/deeplearning-basic/network_hu_7dc0b4ebd0a7a6ad.jpg 1600w"
+                        width="800" 
+                        height="600" 
+                        loading="lazy"
+                        alt="Featured image of post DeepLearning Basic" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/coding/" style="background-color: #2a9d8f; color: #fff;">
+                Coding
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/deeplearning-basic/">DeepLearning Basic</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jul 23, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 5 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>不知道大伙有没有感觉到，cursor这东西出来后web开发星人的危机感&hellip;这玩意可能要带来生产方式的大变革&hellip;尝试布局中</p>
+<h1 id="dl-basic">DL basic
+</h1><h2 id="感知机-神经网络">感知机-&gt;神经网络
+</h2><p>感知机的设计思想很像神经网络的雏形。感知机是接收0，1信号，并输出0，1信号的一种处理结构。中间会进行函数运算，如：</p>
+<p><img src="/p/deeplearning-basic/assets/image-20250723131944746.png"
+	width="619"
+	height="170"
+	srcset="/p/deeplearning-basic/assets/image-20250723131944746_hu_c80932675875302b.png 480w, /p/deeplearning-basic/assets/image-20250723131944746_hu_1e2f0805f4212199.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="364"
+		data-flex-basis="873px"
+	
+></p>
+<p>权重w是控制输入信号重要性的参数；偏置b是调整神经元被激活的容易程度。</p>
+<p>用感知机能够实现与门，与非门，或门的模拟。</p>
+<p>然而，感知机无法实现异或门的输出，其局限性在于它只能表示由<strong>一条直线</strong>分割的空间。为了实现异或门，我们引入多层感知机：</p>
+<h3 id="激活函数">激活函数
+</h3><p><img src="/p/deeplearning-basic/assets/image-20250723132608327.png"
+	width="1256"
+	height="1009"
+	srcset="/p/deeplearning-basic/assets/image-20250723132608327_hu_97a0f8d03038eb7.png 480w, /p/deeplearning-basic/assets/image-20250723132608327_hu_3b9e5686b75309bd.png 1024w"
+	loading="lazy"
+	
+		alt="image-20250723132608327"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="124"
+		data-flex-basis="298px"
+	
+></p>
+<p>如hx所示，激活函数是将输入信号的总和转换为输出信号。</p>
+<p>hx这样的激活函数称为阶跃函数（一旦输入超过阈值就切换输出的函数）。</p>
+<ul>
+<li>sigmoid函数：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">))</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/p/deeplearning-basic/assets/image-20250723133019269.png"
+	width="1301"
+	height="890"
+	srcset="/p/deeplearning-basic/assets/image-20250723133019269_hu_ffa7870b66e981e6.png 480w, /p/deeplearning-basic/assets/image-20250723133019269_hu_edb35377d68224d5.png 1024w"
+	loading="lazy"
+	
+		alt="image-20250723133019269"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="146"
+		data-flex-basis="350px"
+	
+></p>
+<p>与阶跃函数不同，sigmoid函数1.曲线平滑，2.单调递增，位于(0, 1)中。</p>
+<p>神经网络的激活函数必须使用非线性函数，原因在于，线性函数不管如何增加层数，总是存在与之等效的“无隐藏层的神经网络”。</p>
+<ul>
+<li>ReLU：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">relu</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 输入大于0时，直接输出该值；在输入小于等于0时，输出0</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>softmax函数</li>
+</ul>
+<p>对于分类问题，输出层一般用softmax激活函数；回归问题，输出层一般用恒等函数。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">softmax</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">exp_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">sum_exp_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">exp_a</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">y</span> <span class="o">=</span> <span class="n">exp_a</span> <span class="o">/</span> <span class="n">sum_exp_a</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">y</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="损失函数">损失函数
+</h3><ul>
+<li>均方误差（MSE）：</li>
+</ul>
+<p><img src="/p/deeplearning-basic/assets/image-20250723143537419.png"
+	width="1125"
+	height="307"
+	srcset="/p/deeplearning-basic/assets/image-20250723143537419_hu_f63585cd9573459b.png 480w, /p/deeplearning-basic/assets/image-20250723143537419_hu_8db1d9386e1bb3e1.png 1024w"
+	loading="lazy"
+	
+		alt="image-20250723143537419"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="366"
+		data-flex-basis="879px"
+	
+></p>
+<ul>
+<li>交叉熵误差：</li>
+</ul>
+<p><img src="/p/deeplearning-basic/assets/image-20250723162634702.png"
+	width="1112"
+	height="144"
+	srcset="/p/deeplearning-basic/assets/image-20250723162634702_hu_2845da5571c073c5.png 480w, /p/deeplearning-basic/assets/image-20250723162634702_hu_88b4e4dea6d62197.png 1024w"
+	loading="lazy"
+	
+		alt="image-20250723162634702"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="772"
+		data-flex-basis="1853px"
+	
+></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">cross_entropy_error</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">y</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="c1"># 对一维向量[1,2]，转二维统一处理：[[1,2]]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">batch_size</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">batch_size</span><span class="p">),</span> <span class="n">t</span><span class="p">]</span> <span class="o">+</span> <span class="mf">1e-7</span><span class="p">))</span> <span class="o">/</span> <span class="n">batch_size</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 这里对y取值采用了批量语法，y[第一维取值数组A，第二维取值数组B]，会返回一个新数组，每个元素索引按AB对应的数字取</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<p>梯度：模型全部参数的偏导数汇总而成的向量，其单个值是将其他参数值先固定，然后对该参数求偏导数得到，代表了当该参数稍微变化时，损失函数Loss会发生多大变化。</p>
+<p>在求出梯度后，根据学习率*偏导数更新参数</p>
+</li>
+</ul>
+<h3 id="矩阵向量求导">矩阵&amp;向量求导
+</h3><p><a class="link" href="https://zhuanlan.zhihu.com/p/263777564"  target="_blank" rel="noopener"
+    >https://zhuanlan.zhihu.com/p/263777564</a></p>
+<p>本质就是 f 中的每个f分别对变元中的每个元素逐个求偏导，只不过写成了向量、矩阵形式而已。</p>
+<p>举几个例子：</p>
+<ol>
+<li>
+<p>标量f对向量求导，如Loss是均方误差，y是结果向量（一般是一维列向量），最终求导结果是y-t（y，t均为向量）</p>
+</li>
+<li>
+<p>矩阵f对矩阵求导，如线性层Y=XW，X(100,784) W(784,50) Y(100,50)，这里直接有结论：</p>
+<p><img src="/p/deeplearning-basic/assets/image-20250724154328191.png"
+	width="971"
+	height="142"
+	srcset="/p/deeplearning-basic/assets/image-20250724154328191_hu_f3ac4459b767ac2f.png 480w, /p/deeplearning-basic/assets/image-20250724154328191_hu_818d37b25ea1eddf.png 1024w"
+	loading="lazy"
+	
+		alt="image-20250724154328191"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="683"
+		data-flex-basis="1641px"
+	
+></p>
+</li>
+</ol>
+<p>这里Alpha为全1矩阵，在反向传播过程中，Alpha形状和Y相同，因此我们直接×反向传过来的Y的梯度值即可</p>
+<p><a class="link" href="https://juejin.cn/post/7325259560524136499"  target="_blank" rel="noopener"
+    >https://juejin.cn/post/7325259560524136499</a></p>
+<p>维度验证角度看矩阵求导：</p>
+<p><a class="link" href="https://zhuanlan.zhihu.com/p/25202034"  target="_blank" rel="noopener"
+    >https://zhuanlan.zhihu.com/p/25202034</a></p>
+<h3 id="反向传播">反向传播
+</h3><ul>
+<li>数值微分法：与反向传播更新梯度不同，数值微分法直接采用f(x+h)-f(x-h)/2h的方法进行拟合计算，这样不涉及局部计算，对任意参数（如矩阵W，b），都可以直接用Loss作为f，进行数值微分计算。</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">numerical_gradient</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">h</span> <span class="o">=</span> <span class="mf">1e-4</span>  <span class="c1"># 扰动步长（避免浮点数精度问题，取 0.0001）</span>
+</span></span><span class="line"><span class="cl">    <span class="n">grad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>  <span class="c1"># 初始化梯度数组（与 x 形状相同）</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># 遍历 x 的每个元素（支持多维数组）</span>
+</span></span><span class="line"><span class="cl">    <span class="n">it</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nditer</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;multi_index&#39;</span><span class="p">],</span> <span class="n">op_flags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;readwrite&#39;</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="ow">not</span> <span class="n">it</span><span class="o">.</span><span class="n">finished</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">idx</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="n">multi_index</span>  <span class="c1"># 当前元素的多维索引（如 (0,1) 表示第0行第1列）</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="c1"># 计算 f(x+h)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">tmp_val</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>  <span class="c1"># 保存原始值</span>
+</span></span><span class="line"><span class="cl">        <span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tmp_val</span><span class="p">)</span> <span class="o">+</span> <span class="n">h</span>  <span class="c1"># 加扰动 h</span>
+</span></span><span class="line"><span class="cl">        <span class="n">fxh1</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>  <span class="c1"># 计算函数值</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="c1"># 计算 f(x-h)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmp_val</span> <span class="o">-</span> <span class="n">h</span>  <span class="c1"># 减扰动 h</span>
+</span></span><span class="line"><span class="cl">        <span class="n">fxh2</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>  <span class="c1"># 计算函数值</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="c1"># 中心差分法计算梯度</span>
+</span></span><span class="line"><span class="cl">        <span class="n">grad</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">fxh1</span> <span class="o">-</span> <span class="n">fxh2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">h</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmp_val</span>  <span class="c1"># 恢复原始值（避免影响后续计算）</span>
+</span></span><span class="line"><span class="cl">        <span class="n">it</span><span class="o">.</span><span class="n">iternext</span><span class="p">()</span>  <span class="c1"># 移动到下一个元素</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">grad</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>而反向传播法则利用链式法则，大大减少了计算量（之前为了算梯度，还得再前向两次）。</p>
+<h2 id="手撸2层神经网络">手撸2层神经网络
+</h2><p>期望以MNIST数据集为案例，使用numpy手写网络来实现数字识别，可参考鱼书。</p>
+<p><a class="link" href="https://github.com/jimmie-wang/deep_learning_basic_jim"  target="_blank" rel="noopener"
+    >https://github.com/jimmie-wang/deep_learning_basic_jim</a></p>
+<h2 id="优化方法">优化方法
+</h2><h3 id="梯度如何更新">梯度如何更新
+</h3><p>在梯度更新的方法中，我们之前用了SGD，随机梯度下降法，其方法简单，但存在如下问题：</p>
+<p><img src="/p/deeplearning-basic/assets/image-20250724193231631.png"
+	width="1416"
+	height="840"
+	srcset="/p/deeplearning-basic/assets/image-20250724193231631_hu_251900a5f3eba92a.png 480w, /p/deeplearning-basic/assets/image-20250724193231631_hu_634796dff9325dc1.png 1024w"
+	loading="lazy"
+	
+		alt="image-20250724193231631"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="168"
+		data-flex-basis="404px"
+	
+></p>
+<p><img src="/p/deeplearning-basic/assets/image-20250724193215102.png"
+	width="1398"
+	height="1036"
+	srcset="/p/deeplearning-basic/assets/image-20250724193215102_hu_567c4dd01341867.png 480w, /p/deeplearning-basic/assets/image-20250724193215102_hu_5975a3007a4b153a.png 1024w"
+	loading="lazy"
+	
+		alt="image-20250724193215102"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="134"
+		data-flex-basis="323px"
+	
+></p>
+<p>接下来提出几种优化方法改正这一缺点：</p>
+<ul>
+<li>Momentum：在随机梯度下降基础上，添加之前梯度的影响：</li>
+</ul>
+<p><img src="/p/deeplearning-basic/assets/image-20250724194020152.png"
+	width="1333"
+	height="259"
+	srcset="/p/deeplearning-basic/assets/image-20250724194020152_hu_56fa8f560b442863.png 480w, /p/deeplearning-basic/assets/image-20250724194020152_hu_a247f8c469c2fecd.png 1024w"
+	loading="lazy"
+	
+		alt="image-20250724194020152"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="514"
+		data-flex-basis="1235px"
+	
+></p>
+<ul>
+<li>AdaGrad：为每个参数，指定逐渐减小的学习率</li>
+</ul>
+<p><img src="/p/deeplearning-basic/assets/image-20250724194230210.png"
+	width="1364"
+	height="329"
+	srcset="/p/deeplearning-basic/assets/image-20250724194230210_hu_919c5645bce4a57.png 480w, /p/deeplearning-basic/assets/image-20250724194230210_hu_27876a2aa30f49d7.png 1024w"
+	loading="lazy"
+	
+		alt="image-20250724194230210"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="414"
+		data-flex-basis="995px"
+	
+></p>
+<ul>
+<li>Adam：综合了上述两种方法，一个是按照物理规律参考之前运动轨迹，另一个是学习率逐渐衰减。</li>
+</ul>
+<h3 id="权重初始值">权重初始值
+</h3><ul>
+<li>
+<p>采用标准差为1的高斯分布，观察激活后值的分布发现，发生了梯度消失；而采用标准差为0.01的高斯分布，发现激活值集中分布在0.5，意味着多个神经元输出几乎相同的值，表现力受限。</p>
+</li>
+<li>
+<p>当激活函数使用ReLU时，权重初始值使用He初始值，当 激活函数为sigmoid或tanh等S型曲线函数时，初始值使用Xavier初始值。 这是目前的最佳实践。</p>
+</li>
+<li>
+<p>Batch Normalization：调整各层的激活值分布使其拥有适当的广度，在激活函数前，Affine层之后，加入Batch Norm层，将输入数据调整为均值为0，方差为1的分布。通过使用Batch Normalization，可以在训练时不过分依赖初始值。</p>
+</li>
+<li>
+<p>正则化：</p>
+</li>
+</ul>
+<p>​	1. 权值衰减，在学习过程中，对大的权重进行惩罚，来抑制过拟合。很多过拟合是由于权重参数取值过大才发生的。通常，我们为损失函数加上权重的平方范数：1/2（lambda<em>W^2），求导后变为lambda</em>W。对于所有权重，权值衰减方法都会为损失函数加上1/2（lambda*W^2）。因此，在求权重梯度的计算中，要为之前的误差反向传播法的结果加上正则化项的导数λW。</p>
+<p>​	2.Dropout，在学习过程中，随机删除神经元。</p>
+<ul>
+<li>超参数最优化：给超参数设定一个取值范围，并随机取样进行学习，挑出Accuracy较高的取值，并缩小取值范围，不断优化超参数的取值。</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/notebook/">Notebook</a>
+        
+            <a href="/tags/ai/">AI</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/java2goland/">
+        
+        
+            <div class="article-image">
+                <img src="/p/java2goland/JavaVSGO.21f06c8595487bcd9867f910aad911d6_hu_c4e2e4237c46f63a.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post Java2goland"
+                        
+                        data-hash="md5-IfBshZVIe82YZ/kQqtkR1g==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Java2goland</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 JimmyWang
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.99ce1801c4bad426a42fc436add4721e149159dbb598636e9578fd59cf778c83.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+
+
+
+<meting-js
+	server="netease"
+	type="playlist"
+    id="14022346385"
+    fixed="true"
+    list-folded="false"
+    autoplay="false"
+    >
+</meting-js>
+<script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script>
+
+
+
+    
+    <script src=https://jimmie-wang.github.io/js/topbar.min.js></script>
+
+
+<script>
+    var pjax = new Pjax({
+        selectors: [".main-container"]
+    })
+    pjax._handleResponse = pjax.handleResponse;
+    pjax.handleResponse = function (responseText, request, href, options) {
+        if (request.responseText.match("<html")) {
+            if (responseText) {
+                
+                let newDom = new DOMParser().parseFromString(responseText, 'text/html');
+                
+                let bodyClass = newDom.body.className;
+                document.body.setAttribute("class", bodyClass)
+            }
+            
+            pjax._handleResponse(responseText, request, href, options);
+        } else {
+            
+        }
+    }
+
+    document.addEventListener('pjax:complete', () =>{
+        
+        window.Stack.init()
+        
+        topbar.hide()
+    })
+
+    document.addEventListener('pjax:send', () => {
+        
+        topbar.show();
+    })
+
+</script>
+
+<div id="particles-js"></div>
+
+<script src=https://jimmie-wang.github.io/background/particles.min.js></script>
+<script>
+  particlesJS.load('particles-js', "https://jimmie-wang.github.io/background/particlesjs-config.json", function() {
+    console.log('particles.js loaded - callback');
+  });
+</script>
+
+<style>
+  #particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+  }
+</style>
+
+
+
+<script>
+
+    
+    const cssPath = "https://jimmie-wang.github.io/css/waifu.css"
+    const tipsJsonPath = "https://jimmie-wang.github.io/json/waifu-tips.json"
+
+    
+    const live2d_path = "https://fastly.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/";
+
+    
+    function loadExternalResource(url, type) {
+        return new Promise((resolve, reject) => {
+            let tag;
+
+            if (type === "css") {
+                tag = document.createElement("link");
+                tag.rel = "stylesheet";
+                tag.href = url;
+            }
+            else if (type === "js") {
+                tag = document.createElement("script");
+                tag.src = url;
+            }
+            if (tag) {
+                tag.onload = () => resolve(url);
+                tag.onerror = () => reject(url);
+                document.head.appendChild(tag);
+            }
+        });
+    }
+
+    
+    if (screen.width >= 768) {
+        Promise.all([
+            loadExternalResource(cssPath, "css"),
+            loadExternalResource(live2d_path + "live2d.min.js", "js"),
+            loadExternalResource(live2d_path + "waifu-tips.js", "js")
+        ]).then(() => {
+            
+            initWidget({
+                waifuPath: tipsJsonPath,
+                
+                cdnPath: "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/",
+                tools: ["hitokoto", "asteroids", "switch-model", "switch-texture", "photo", "info", "quit"]
+            });
+
+            initWaifuMouseEvent();
+        });
+    }
+
+    console.log(`
+  く__,.ヘヽ.        /  ,ー､ 〉
+           ＼ ', !-─‐-i  /  /´
+           ／｀ｰ'       L/／｀ヽ､
+         /   ／,   /|   ,   ,       ',
+       ｲ   / /-‐/  ｉ  L_ ﾊ ヽ!   i
+        ﾚ ﾍ 7ｲ｀ﾄ   ﾚ'ｧ-ﾄ､!ハ|   |
+          !,/7 '0'     ´0iソ|    |
+          |.从"    _     ,,,, / |./    |
+          ﾚ'| i＞.､,,__  _,.イ /   .i   |
+            ﾚ'| | / k_７_/ﾚ'ヽ,  ﾊ.  |
+              | |/i 〈|/   i  ,.ﾍ |  i  |
+             .|/ /  ｉ：    ﾍ!    ＼  |
+              kヽ>､ﾊ    _,.ﾍ､    /､!
+              !'〈//｀Ｔ´', ＼ ｀'7'ｰr'
+              ﾚ'ヽL__|___i,___,ンﾚ|ノ
+                  ﾄ-,/  |___./
+                  'ｰ'    !_,.:
+`);
+    function initWaifuMouseEvent() {
+        const waifu = document.getElementById("waifu");
+        let isDown = false;
+        let waifuLeft;
+        let mouseLeft;
+        let waifuTop;
+        let mouseTop;
+        
+        waifu.onmousedown = function (e) {
+            isDown = true;
+            
+            waifuLeft = waifu.offsetLeft;
+            mouseLeft = e.clientX;
+            
+            waifuTop = waifu.offsetTop;
+            mouseTop = e.clientY;
+        }
+        
+        window.onmousemove = function (e) {
+            if (!isDown) {
+                return;
+            }
+            
+            let currentLeft = waifuLeft + (e.clientX - mouseLeft);
+            if (currentLeft < 0) {
+                currentLeft = 0;
+            } else if (currentLeft > window.innerWidth - 300) {
+                currentLeft = window.innerWidth - 300;
+            }
+            waifu.style.left = currentLeft + "px";
+            
+            let currentTop = waifuTop + (e.clientY - mouseTop);
+            if (currentTop < 30) {
+                currentTop = 30
+            } else if (currentTop > window.innerHeight - 290) {
+                currentTop = window.innerHeight - 290
+            }
+            waifu.style.top = currentTop + "px";
+        }
+        
+        window.onmouseup = function (e) {
+            isDown = false;
+        }
+    }
+
+</script>
+
+
+    </body>
+</html>

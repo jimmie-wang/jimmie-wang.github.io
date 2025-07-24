@@ -7,20 +7,28 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>JimmyWang</copyright>
-        <lastBuildDate>Sat, 19 Jul 2025 18:12:46 +0800</lastBuildDate><atom:link href="https://jimmie-wang.github.io/tags/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>Backend</title>
-        <link>https://jimmie-wang.github.io/tags/backend/</link>
-        <pubDate>Sat, 19 Jul 2025 18:12:46 +0800</pubDate>
+        <lastBuildDate>Wed, 23 Jul 2025 11:57:47 +0800</lastBuildDate><atom:link href="https://jimmie-wang.github.io/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>AI</title>
+        <link>https://jimmie-wang.github.io/tags/ai/</link>
+        <pubDate>Wed, 23 Jul 2025 11:57:47 +0800</pubDate>
         
-        <guid>https://jimmie-wang.github.io/tags/backend/</guid>
+        <guid>https://jimmie-wang.github.io/tags/ai/</guid>
         <description></description>
         </item>
         <item>
         <title>Notebook</title>
         <link>https://jimmie-wang.github.io/tags/notebook/</link>
-        <pubDate>Sat, 19 Jul 2025 18:12:46 +0800</pubDate>
+        <pubDate>Wed, 23 Jul 2025 11:57:47 +0800</pubDate>
         
         <guid>https://jimmie-wang.github.io/tags/notebook/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Backend</title>
+        <link>https://jimmie-wang.github.io/tags/backend/</link>
+        <pubDate>Sat, 19 Jul 2025 18:12:46 +0800</pubDate>
+        
+        <guid>https://jimmie-wang.github.io/tags/backend/</guid>
         <description></description>
         </item>
         
