@@ -717,6 +717,13 @@
         <li><a href="#权重初始值">权重初始值</a></li>
       </ol>
     </li>
+    <li><a href="#卷积神经网络">卷积神经网络</a>
+      <ol>
+        <li><a href="#卷积计算">卷积计算</a></li>
+        <li><a href="#池化计算">池化计算</a></li>
+        <li><a href="#卷积与池化的实现">卷积与池化的实现</a></li>
+      </ol>
+    </li>
   </ol>
 </nav>
         </div>
@@ -793,7 +800,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 5 分钟
+                    阅读时长: 6 分钟
                 </time>
             </div>
         
@@ -1156,7 +1163,216 @@
 <ul>
 <li>超参数最优化：给超参数设定一个取值范围，并随机取样进行学习，挑出Accuracy较高的取值，并缩小取值范围，不断优化超参数的取值。</li>
 </ul>
-
+<h2 id="卷积神经网络">卷积神经网络
+</h2><h3 id="卷积计算">卷积计算
+</h3><ul>
+<li>2维：</li>
+</ul>
+<p>卷积核，又称滤波器，在原始图像（假设是m*n的二维数据）上进行矩阵按元素乘法，并移动，输出矩阵后，再加固定偏置。</p>
+<p><img src="/p/deeplearning-basic/assets/image-20250726154854429.png"
+	width="1081"
+	height="388"
+	srcset="/p/deeplearning-basic/assets/image-20250726154854429_hu_67a2a6c14371d0ef.png 480w, /p/deeplearning-basic/assets/image-20250726154854429_hu_fbffc81cc86b480b.png 1024w"
+	loading="lazy"
+	
+		alt="image-20250726154854429"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="278"
+		data-flex-basis="668px"
+	
+></p>
+<p><img src="/p/deeplearning-basic/assets/image-20250726154903669.png"
+	width="1091"
+	height="369"
+	srcset="/p/deeplearning-basic/assets/image-20250726154903669_hu_b473d5f3e887bab9.png 480w, /p/deeplearning-basic/assets/image-20250726154903669_hu_60b7c7b26a7140f.png 1024w"
+	loading="lazy"
+	
+		alt="image-20250726154903669"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="295"
+		data-flex-basis="709px"
+	
+></p>
+<p>在这个过程中，可能有填充：</p>
+<p><img src="/p/deeplearning-basic/assets/image-20250726154932589.png"
+	width="1157"
+	height="568"
+	srcset="/p/deeplearning-basic/assets/image-20250726154932589_hu_df95039a81c30d01.png 480w, /p/deeplearning-basic/assets/image-20250726154932589_hu_8dd7ef9ca20677c2.png 1024w"
+	loading="lazy"
+	
+		alt="image-20250726154932589"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="203"
+		data-flex-basis="488px"
+	
+></p>
+<p>而步幅stride表示每次移动多少单位</p>
+<p>由于图像都是三维数据，且需要三个通道结合才能提取出共性特征，因此我们需要三维卷积：</p>
+<p>在多通道（维）卷积中，有几个卷积核，结果就有几个通道。如一个卷积核过程：按通道，按元素位置对应取乘积，再相加。</p>
+<p><img src="/p/deeplearning-basic/assets/image-20250726155152015.png"
+	width="1090"
+	height="457"
+	srcset="/p/deeplearning-basic/assets/image-20250726155152015_hu_c26659ea5b4d8795.png 480w, /p/deeplearning-basic/assets/image-20250726155152015_hu_6a7be9a5e77402ce.png 1024w"
+	loading="lazy"
+	
+		alt="image-20250726155152015"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="238"
+		data-flex-basis="572px"
+	
+></p>
+<p><img src="/p/deeplearning-basic/assets/image-20250726155254472.png"
+	width="1242"
+	height="451"
+	srcset="/p/deeplearning-basic/assets/image-20250726155254472_hu_b0733d0f40b97226.png 480w, /p/deeplearning-basic/assets/image-20250726155254472_hu_2d10014c5aa94b28.png 1024w"
+	loading="lazy"
+	
+		alt="image-20250726155254472"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="275"
+		data-flex-basis="660px"
+	
+></p>
+<h3 id="池化计算">池化计算
+</h3><p>缩小高、长方向的空间的运算，有：max池化、average池化</p>
+<p><img src="/p/deeplearning-basic/assets/image-20250726155419672.png"
+	width="1075"
+	height="520"
+	srcset="/p/deeplearning-basic/assets/image-20250726155419672_hu_f46827ac0b6f93c0.png 480w, /p/deeplearning-basic/assets/image-20250726155419672_hu_8b0c2bce4b7cdaba.png 1024w"
+	loading="lazy"
+	
+		alt="image-20250726155419672"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="206"
+		data-flex-basis="496px"
+	
+></p>
+<h3 id="卷积与池化的实现">卷积与池化的实现
+</h3><ul>
+<li>卷积：传递(N, C, H,W)</li>
+</ul>
+<p>为了避免多层for对卷积进行运算，这里基于im2col函数进行展开，之后按照矩阵乘法运算：</p>
+<p><img src="/p/deeplearning-basic/assets/image-20250726155910370.png"
+	width="1114"
+	height="762"
+	srcset="/p/deeplearning-basic/assets/image-20250726155910370_hu_bc7ddc74fa5cc269.png 480w, /p/deeplearning-basic/assets/image-20250726155910370_hu_1f560689f3ea4284.png 1024w"
+	loading="lazy"
+	
+		alt="image-20250726155910370"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="146"
+		data-flex-basis="350px"
+	
+></p>
+<p>由于一个卷积核输出结果里的一个通道，因此 矩阵的乘积，2维数据中同一列的元素都是一个通道的。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Convolution</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">W</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">W</span> <span class="o">=</span> <span class="n">W</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="n">b</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">stride</span> <span class="o">=</span> <span class="n">stride</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">pad</span> <span class="o">=</span> <span class="n">pad</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">FN</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">FH</span><span class="p">,</span> <span class="n">FW</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">W</span><span class="o">.</span><span class="n">shape</span>
+</span></span><span class="line"><span class="cl">        <span class="n">N</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">W</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span>
+</span></span><span class="line"><span class="cl">        <span class="n">out_h</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">H</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">pad</span> <span class="o">-</span> <span class="n">FH</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">stride</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">out_w</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">W</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">pad</span> <span class="o">-</span> <span class="n">FW</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">stride</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">col</span> <span class="o">=</span> <span class="n">im2col</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">FH</span><span class="p">,</span> <span class="n">FW</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stride</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pad</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">col_W</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">W</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">FN</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">T</span> <span class="c1"># 滤波器的展开</span>
+</span></span><span class="line"><span class="cl">        <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">col_W</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span>
+</span></span><span class="line"><span class="cl">        <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">out_h</span><span class="p">,</span> <span class="n">out_w</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># transpose，数字表示，原来的第三维数据，放到第二维，原来的第一维放到三，第二维放到4，就是把最后一维，通道数，放到了第二维，使得输出形状符合(N,C,H,W)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">out</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>池化：和卷积类似，先通过im2col展开，然后按照池化窗口大小分组，并求最大/平均，最后组装维度</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Pooling</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pool_h</span><span class="p">,</span> <span class="n">pool_w</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">pool_h</span> <span class="o">=</span> <span class="n">pool_h</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">pool_w</span> <span class="o">=</span> <span class="n">pool_w</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">stride</span> <span class="o">=</span> <span class="n">stride</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">pad</span> <span class="o">=</span> <span class="n">pad</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">N</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">W</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span>
+</span></span><span class="line"><span class="cl">        <span class="n">out_h</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">H</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool_h</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">stride</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">out_w</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">W</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool_w</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">stride</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># </span>
+</span></span><span class="line"><span class="cl"><span class="n">展开</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">col</span> <span class="o">=</span> <span class="n">im2col</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool_h</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool_w</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stride</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pad</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">col</span> <span class="o">=</span> <span class="n">col</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool_h</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">pool_w</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># </span>
+</span></span><span class="line"><span class="cl"><span class="n">最大值</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># 求完最大，就是一维向量，表示各个最大值</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># </span>
+</span></span><span class="line"><span class="cl"><span class="n">转换</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">out_h</span><span class="p">,</span> <span class="n">out_w</span><span class="p">,</span> <span class="n">C</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">out</span> <span class="c1"># reshape，先按N分，再按out_h即高度是几行，然后再按out_w，每个高度下，能分几列，按顺序分出来，最后是各个通道排序，符合卷积层计算逻辑。最终需要将C通道提前。</span>
+</span></span><span class="line"><span class="cl">    
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
 </section>
 
 
